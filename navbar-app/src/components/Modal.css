@@ -1,0 +1,128 @@
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+  position: relative;
+  max-width: 90vw;
+  max-height: 90vh;
+  overflow: auto;
+  animation: slideIn 0.3s ease-out;
+  padding: 2rem;
+  min-width: 320px; /* lowered for small phones */
+}
+
+.modal-content.with-detail-head { padding-top:3.2rem; }
+
+/* Auth modal variant (non-square, fluid) */
+.modal-content.auth-modal{
+  width:min(92vw, 700px);
+  max-width:700px;
+  aspect-ratio:auto !important;
+  padding:2rem 2rem 1.75rem;
+}
+@media (max-width:680px){
+  .modal-content.auth-modal{ width:94vw; padding:1.6rem 1.4rem 1.4rem; }
+}
+@media (max-width:520px){
+  .modal-content.auth-modal{ width:96vw; padding:1.25rem 1rem 1.15rem; border-radius:10px; }
+}
+@media (max-width:420px){
+  .modal-content.auth-modal{ 
+    width:96vw; 
+    max-width:96vw; 
+    height:auto; 
+    max-height:calc(100vh - 1.2rem); 
+    margin:.6rem auto; 
+    padding:1rem .9rem .85rem; 
+    border-radius:12px; 
+  }
+  .modal-content.auth-modal .modal-close{ top:.55rem; right:.55rem; }
+}
+@media (max-width:360px){
+  .modal-content.auth-modal{ padding:.8rem .65rem .7rem; margin:.5rem auto; max-height:calc(100vh - 1rem); }
+}
+
+.modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: #fff !important;
+  border: 1px solid #000 !important;
+  cursor: pointer;
+  color: #000 !important;
+  padding: 0.5rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  z-index: 1;
+  opacity: 1 !important;
+}
+
+.modal-close:hover {
+  background-color: #fee !important;
+  color: #000 !important;
+}
+
+.modal-close svg {
+  width: 20px;
+  height: 20px;
+  color: #000 !important;
+}
+
+/* Animation keyframes */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .modal-content {
+    min-width: unset;
+    width: 90vw;
+    padding: 1.5rem;
+    margin: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .modal-content {
+    width: 95vw;
+    padding: 1rem;
+    border-radius: 8px;
+  }
+}

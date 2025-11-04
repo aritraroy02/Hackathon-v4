@@ -1,0 +1,67 @@
+{
+  "clientId": "S1AjYSU-N1IsoH1M4835k0LhrHleqNuNleEkpVrUIG0",
+  "privateKey": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQChT89z6TTObZo2\nG3YATNnbIPzqNHa+ukiwYjw+ABCG+9dtDFEkAa97bgL+O5tGEuvviL9Ro+EUeZfy\nqv9Vkj84m623jiCPjFDOxfXazlNSfYpi4R+tNajtaebonI20AN0UBoq6TcOctxVT\nYj3g3LR0wO9xV9BH/dfSffl0FF/uBsVIDtFPP5AW2iPvW8tmz+HKbsJU8VV+kyEr\nHIQLClnQK/Z76SYFODLBsvjumqIi8C75bn0EVCZ+g/QXLIdevFF/E87PKPwf4sKw\nUOFoY9KWE4yfGjd8RyEgr2gG/eGEHSd6ii/CtaPsPKgJQcnAgrKPwl9ax5iBbyzh\nt0vqMTRXAgMBAAECggEABDDFFF9GCmjJfUdYWOimLi2ctF7ZiNnhAogCxZ+Nzlvj\nfEc6ImPS0bOJa15UCc17CJV2VuIZekUwX9L2YBw0/Tz6Fc8g5GnCPaTh3qXGf1mY\nizoK7x56PXSnVXqfqcHt/FOxLebQQpV0/d4K+njxTSkn7ztXQ0+CWEsCfHP9C/th\nfKee3FoWjyctAjxzNNC2udzFddNUrZ1/XEIah+QvzVO2Wl7H7Z3xN/0MNoA2DZyB\nh8BUfQNwVrc4drk5hV+d5rH3OUpB99+GxG1f5NO9P8BaWmjCj4pRD2R3wvhWCKne\ngXvzZBQMetbm5qkyXooMxQXz6/L97g+RJanuIcdUIQKBgQDMmPt4VBhQwChmQ/5K\n+DAQNMC5Z9uk65Z/9YCrTX1L+bTzNiweRNnDFKSELqkxaX+MZgCdzYzF2CK1BIFB\nxwlS4PPPl2bHCTQ12TkK45dOKd4OsHccxYrutysjdMEMQaWigxoclKVuVb5O6UDc\nsb65weclXbCXyeIC2aSBpwRX4QKBgQDJ1tTeIqHimd+A2/ClAbIBxBGHhUmkGhC1\nGDeon6uf6tZkxef9irUSiLPnn3mqMPkSaQvyaMluAmVHgHvek4sbI/jDaI43eYyL\ny2sX0qtGUo5X2ZGXUq8s0TDKe4R7fZNjFLDTpT0Cjhc8Pr0uW1CEyO+cCu/GcRra\nml50mNCzNwKBgQCrNl5CLMWIVbW5Fq8nl5fJCAw7W1EwKsHv5Mc/EwKGYLlvSecT\nkXRVzuF5h/6oTeuh1v4vEAL80UkCCHoOTHxd8ce18bHdX7NkWJpmpVxJ2blsu3mC\nB0GjUH72Fc8y7YCphWKFhlMGCRTPvlw8EzZTBpPi7gtIinXrAqyqntSAoQKBgBW7\n5WYaEpaE/TUx+cK64QEhrMWMC7b4+42UkwG8V827iuSFDwsVMZRSVhT97iruZROf\nbiLnN7F53pAJfM0l1BfTEslv68h7dS/kcp65F6pV33AERJIn3CcWS4uyKzzk88b6\nhmPz6hLpXAUnuFVSjeQOgwapgtI6garCbqNdhTOXAoGBAIvc5rL/OI0aWEo5go4n\nayhIAHBnWctkMlAhJiVpf2x5TK+dcsmWq5NckUaPt4e1/6aJaAT72N20AelUWrdZ\nR/qaRjWnlaO0BR9Ln99V8GSjn8LxC1R/NUuiPR3VjkycLQbzMNiaY/GDVpUioPv9\nR3oqjrlQfLdWs/GQQzMrnSiL\n-----END PRIVATE KEY-----\n",
+  "publicKey": "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAoU/Pc+k0zm2aNht2AEzZ\n2yD86jR2vrpIsGI8PgAQhvvXbQxRJAGve24C/jubRhLr74i/UaPhFHmX8qr/VZI/\nOJutt44gj4xQzsX12s5TUn2KYuEfrTWo7Wnm6JyNtADdFAaKuk3DnLcVU2I94Ny0\ndMDvcVfQR/3X0n35dBRf7gbFSA7RTz+QFtoj71vLZs/hym7CVPFVfpMhKxyECwpZ\n0Cv2e+kmBTgywbL47pqiIvAu+W59BFQmfoP0FyyHXrxRfxPOzyj8H+LCsFDhaGPS\nlhOMnxo3fEchIK9oBv3hhB0neoovwrWj7DyoCUHJwIKyj8JfWseYgW8s4bdL6jE0\nVwIDAQAB\n-----END PUBLIC KEY-----\n",
+  "publicKeyJWK": {
+    "kty": "RSA",
+    "use": "sig",
+    "alg": "RS256",
+    "n": "oU_Pc-k0zm2aNht2AEzZ2yD86jR2vrpIsGI8PgAQhvvXbQxRJAGve24C_jubRhLr74i_UaPhFHmX8qr_VZI_OJutt44gj4xQzsX12s5TUn2KYuEfrTWo7Wnm6JyNtADdFAaKuk3DnLcVU2I94Ny0dMDvcVfQR_3X0n35dBRf7gbFSA7RTz-QFtoj71vLZs_hym7CVPFVfpMhKxyECwpZ0Cv2e-kmBTgywbL47pqiIvAu-W59BFQmfoP0FyyHXrxRfxPOzyj8H-LCsFDhaGPSlhOMnxo3fEchIK9oBv3hhB0neoovwrWj7DyoCUHJwIKyj8JfWseYgW8s4bdL6jE0Vw",
+    "e": "AQAB"
+  },
+  "registrationRequest": {
+    "requestTime": "2025-11-04T09:52:02.474Z",
+    "request": {
+      "clientId": "S1AjYSU-N1IsoH1M4835k0LhrHleqNuNleEkpVrUIG0",
+      "clientName": "React eSignet Demo App",
+      "publicKey": {
+        "kty": "RSA",
+        "use": "sig",
+        "alg": "RS256",
+        "n": "oU_Pc-k0zm2aNht2AEzZ2yD86jR2vrpIsGI8PgAQhvvXbQxRJAGve24C_jubRhLr74i_UaPhFHmX8qr_VZI_OJutt44gj4xQzsX12s5TUn2KYuEfrTWo7Wnm6JyNtADdFAaKuk3DnLcVU2I94Ny0dMDvcVfQR_3X0n35dBRf7gbFSA7RTz-QFtoj71vLZs_hym7CVPFVfpMhKxyECwpZ0Cv2e-kmBTgywbL47pqiIvAu-W59BFQmfoP0FyyHXrxRfxPOzyj8H-LCsFDhaGPSlhOMnxo3fEchIK9oBv3hhB0neoovwrWj7DyoCUHJwIKyj8JfWseYgW8s4bdL6jE0Vw",
+        "e": "AQAB"
+      },
+      "relyingPartyId": "mock-relying-party-id",
+      "userClaims": [
+        "name",
+        "email",
+        "gender",
+        "phone_number",
+        "picture",
+        "birthdate"
+      ],
+      "authContextRefs": [
+        "mosip:idp:acr:generated-code",
+        "mosip:idp:acr:password",
+        "mosip:idp:acr:linked-wallet"
+      ],
+      "logoUri": "https://via.placeholder.com/150",
+      "redirectUris": [
+        "http://localhost:5000/callback"
+      ],
+      "grantTypes": [
+        "authorization_code"
+      ],
+      "clientAuthMethods": [
+        "private_key_jwt"
+      ],
+      "additionalConfig": {
+        "userinfo_response_type": "JWS",
+        "purpose": {
+          "type": "verify"
+        },
+        "signup_banner_required": true,
+        "forgot_pwd_link_required": true,
+        "consent_expire_in_mins": 20
+      }
+    }
+  },
+  "registrationResponse": {
+    "responseTime": "2025-11-04T09:52:59.810Z",
+    "response": {
+      "clientId": "S1AjYSU-N1IsoH1M4835k0LhrHleqNuNleEkpVrUIG0",
+      "status": "ACTIVE"
+    },
+    "errors": []
+  }
+}
