@@ -15,7 +15,7 @@ const ESignetAuth = () => {
   // forwards the browser back to the React app at /?authenticated=true after storing tokens.
   // Build OIDC config dynamically using backend metadata for client_id
   // Updated client ID from successful registration
-  const clientId = 'S1AjYSU-N1IsoH1M4835k0LhrHleqNuNleEkpVrUIG0';
+  const clientId = '65Dhx9PLFnuTmXdKnky1j9rFxA324QTARr2-HlIJYKg';
   const authorizeUri = 'http://localhost:3000/authorize';
   const oidcConfig = useMemo(() => ({
     authorizeUri,

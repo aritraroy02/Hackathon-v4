@@ -37,6 +37,68 @@ const Header = ({ onActiveViewChange }) => {
     return () => window.removeEventListener('resize', handler);
   },[]);
 
+  // Function to get location from IP address (fallback)
+  const getLocationFromIP = async () => {
+    try {
+      const response = await fetch('https://ipapi.co/json/');
+      if (!response.ok) throw new Error('IP geolocation failed');
+      
+      const data = await response.json();
+      return {
+        latitude: data.latitude,
+        longitude: data.longitude,
+        accuracy: 5000, // IP-based location is less accurate
+        timestamp: new Date().toLocaleString(),
+        source: `${data.city}, ${data.region}, ${data.country_name}`,
+        city: data.city || '',
+        country: data.country_name || '',
+        street: '',
+        area: data.region || '',
+        state: data.region || '',
+        postcode: data.postal || '',
+        coordinates: [data.longitude, data.latitude],
+        method: 'IP-based (approximate)'
+      };
+    } catch (error) {
+      console.error('IP geolocation failed:', error);
+      return null;
+    }
+  };
+
+  // Function to reverse geocode coordinates to address
+  const reverseGeocode = async (latitude, longitude) => {
+    try {
+      const response = await fetch(
+        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&zoom=18&addressdetails=1`,
+        {
+          headers: {
+            'User-Agent': 'ChildHealthBooklet/1.0'
+          }
+        }
+      );
+      
+      if (!response.ok) {
+        throw new Error('Geocoding failed');
+      }
+      
+      const data = await response.json();
+      const address = data.address || {};
+      
+      return {
+        street: address.road || address.street || '',
+        area: address.suburb || address.neighbourhood || address.village || '',
+        city: address.city || address.town || address.county || '',
+        state: address.state || '',
+        country: address.country || '',
+        postcode: address.postcode || '',
+        displayName: data.display_name || ''
+      };
+    } catch (error) {
+      console.warn('Reverse geocoding failed:', error);
+      return null;
+    }
+  };
+
   // Function to auto-detect location on login (persistent for session)
   const autoDetectLocation = useCallback(async () => {
     if (locationDetected || location) return; // Skip if already detected
@@ -44,29 +106,96 @@ const Header = ({ onActiveViewChange }) => {
     setLocationLoading(true);
     setLocationError('');
 
-    // Create location data for the session
-    setTimeout(() => {
-      const locationData = {
-        latitude: 17.3850,
-        longitude: 78.4867,
-        accuracy: 100,
-        timestamp: new Date().toLocaleString(),
-        source: 'Madhapur, Hyderabad, Telangana',
-        city: 'Hyderabad',
-        country: 'India', 
-        street: 'HITEC City Road',
-        area: 'Madhapur',
-        state: 'Telangana',
-        postcode: '500081'
-      };
+    // Check if geolocation is supported
+    if (!navigator.geolocation) {
+      console.warn('⚠️ Geolocation not supported, trying IP-based location...');
+      const ipLocation = await getLocationFromIP();
+      if (ipLocation) {
+        setLocation(ipLocation);
+        setLocationDetected(true);
+        sessionStorage.setItem('user_location', JSON.stringify(ipLocation));
+        console.log('✅ IP-based location detected:', ipLocation);
+      } else {
+        setLocationError('Location detection not available');
+      }
+      setLocationLoading(false);
+      return;
+    }
+
+    // Try GPS with longer timeout and lower accuracy first
+    const tryGPS = (highAccuracy = false, timeout = 15000) => {
+      return new Promise((resolve, reject) => {
+        navigator.geolocation.getCurrentPosition(
+          async (position) => {
+            const { latitude, longitude, accuracy } = position.coords;
+            console.log('📍 Got GPS coordinates:', { latitude, longitude, accuracy, highAccuracy });
+            
+            // Reverse geocode to get address
+            const address = await reverseGeocode(latitude, longitude);
+            
+            const locationData = {
+              latitude,
+              longitude,
+              accuracy: Math.round(accuracy),
+              timestamp: new Date().toLocaleString(),
+              source: address ? address.displayName : `${latitude.toFixed(4)}, ${longitude.toFixed(4)}`,
+              city: address?.city || '',
+              country: address?.country || '',
+              street: address?.street || '',
+              area: address?.area || '',
+              state: address?.state || '',
+              postcode: address?.postcode || '',
+              coordinates: [longitude, latitude],
+              method: highAccuracy ? 'GPS (High Accuracy)' : 'GPS (Standard)'
+            };
+            
+            resolve(locationData);
+          },
+          (error) => {
+            reject(error);
+          },
+          {
+            enableHighAccuracy: highAccuracy,
+            timeout: timeout,
+            maximumAge: 30000 // Accept cached position up to 30 seconds old
+          }
+        );
+      });
+    };
+
+    try {
+      // First try: Quick GPS with standard accuracy
+      console.log('📡 Trying standard GPS (15s timeout)...');
+      const locationData = await tryGPS(false, 15000);
       
       setLocation(locationData);
       setLocationDetected(true);
       setLocationLoading(false);
-      // Store location data in session storage for child record uploads
       sessionStorage.setItem('user_location', JSON.stringify(locationData));
-      console.log('Location auto-detected for session');
-    }, 1000);
+      console.log('✅ Location auto-detected:', locationData);
+      
+    } catch (error) {
+      console.warn('⚠️ Standard GPS failed, trying IP-based location...', error.message);
+      
+      // Fallback to IP-based location
+      const ipLocation = await getLocationFromIP();
+      if (ipLocation) {
+        setLocation(ipLocation);
+        setLocationDetected(true);
+        sessionStorage.setItem('user_location', JSON.stringify(ipLocation));
+        console.log('✅ IP-based location detected (fallback):', ipLocation);
+        setLocationLoading(false);
+      } else {
+        // Show error only if both GPS and IP failed
+        let errorMsg = 'Unable to get location';
+        if (error.code === 1) errorMsg = 'Location access denied. Please enable location permissions.';
+        else if (error.code === 2) errorMsg = 'Location unavailable. Using approximate location.';
+        else if (error.code === 3) errorMsg = 'Location request timed out. Using approximate location.';
+        
+        setLocationError(errorMsg);
+        setLocationLoading(false);
+      }
+    }
   }, [locationDetected, location]);
 
   // Function to manually refresh location (for manual requests)
@@ -74,28 +203,95 @@ const Header = ({ onActiveViewChange }) => {
     setLocationLoading(true);
     setLocationError('');
 
-    // Create fresh location data
-    setTimeout(() => {
-      const locationData = {
-        latitude: 17.3850,
-        longitude: 78.4867,
-        accuracy: 100,
-        timestamp: new Date().toLocaleString(),
-        source: 'Madhapur, Hyderabad, Telangana',
-        city: 'Hyderabad',
-        country: 'India', 
-        street: 'HITEC City Road',
-        area: 'Madhapur',
-        state: 'Telangana',
-        postcode: '500081'
-      };
+    // Check if geolocation is supported
+    if (!navigator.geolocation) {
+      console.warn('⚠️ Geolocation not supported, trying IP-based location...');
+      const ipLocation = await getLocationFromIP();
+      if (ipLocation) {
+        setLocation(ipLocation);
+        setLocationDetected(true);
+        sessionStorage.setItem('user_location', JSON.stringify(ipLocation));
+        console.log('✅ IP-based location detected:', ipLocation);
+      } else {
+        setLocationError('Location detection not available');
+      }
+      setLocationLoading(false);
+      return;
+    }
+
+    // Try GPS with progressive timeout strategy
+    const tryGPS = (highAccuracy = false, timeout = 15000) => {
+      return new Promise((resolve, reject) => {
+        navigator.geolocation.getCurrentPosition(
+          async (position) => {
+            const { latitude, longitude, accuracy } = position.coords;
+            console.log('📍 Got GPS coordinates:', { latitude, longitude, accuracy, highAccuracy });
+            
+            // Reverse geocode to get address
+            const address = await reverseGeocode(latitude, longitude);
+            
+            const locationData = {
+              latitude,
+              longitude,
+              accuracy: Math.round(accuracy),
+              timestamp: new Date().toLocaleString(),
+              source: address ? address.displayName : `${latitude.toFixed(4)}, ${longitude.toFixed(4)}`,
+              city: address?.city || '',
+              country: address?.country || '',
+              street: address?.street || '',
+              area: address?.area || '',
+              state: address?.state || '',
+              postcode: address?.postcode || '',
+              coordinates: [longitude, latitude],
+              method: highAccuracy ? 'GPS (High Accuracy)' : 'GPS (Standard)'
+            };
+            
+            resolve(locationData);
+          },
+          (error) => {
+            reject(error);
+          },
+          {
+            enableHighAccuracy: highAccuracy,
+            timeout: timeout,
+            maximumAge: highAccuracy ? 0 : 30000
+          }
+        );
+      });
+    };
+
+    try {
+      // Try standard accuracy first (faster)
+      console.log('📡 Trying standard GPS (15s timeout)...');
+      const locationData = await tryGPS(false, 15000);
       
       setLocation(locationData);
       setLocationDetected(true);
-      setLocationLoading(false);
-      // Store location data in session storage for child record uploads
       sessionStorage.setItem('user_location', JSON.stringify(locationData));
-    }, 800);
+      console.log('✅ Location refreshed:', locationData);
+      setLocationLoading(false);
+      
+    } catch (error) {
+      console.warn('⚠️ Standard GPS failed, trying IP-based location...', error.message);
+      
+      // Fallback to IP-based location
+      const ipLocation = await getLocationFromIP();
+      if (ipLocation) {
+        setLocation(ipLocation);
+        setLocationDetected(true);
+        sessionStorage.setItem('user_location', JSON.stringify(ipLocation));
+        console.log('✅ IP-based location detected (fallback):', ipLocation);
+        setLocationLoading(false);
+      } else {
+        let errorMsg = 'Unable to get location';
+        if (error.code === 1) errorMsg = 'Location access denied. Please enable location permissions.';
+        else if (error.code === 2) errorMsg = 'Location unavailable. Please try again.';
+        else if (error.code === 3) errorMsg = 'Location request timed out. Please try again.';
+        
+        setLocationError(errorMsg);
+        setLocationLoading(false);
+      }
+    }
   };
 
 
